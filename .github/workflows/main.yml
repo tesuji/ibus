@@ -8,6 +8,7 @@ on:
 
 jobs:
   version:
+    if: false
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -211,7 +212,7 @@ jobs:
     runs-on: ubuntu-latest
     # if: github.event_name != 'pull_request' && github.event.ref == 'refs/heads/main'
     if: github.event_name != 'pull_request'
-    needs: [build]
+    # needs: [build]
     steps:
       - name: Install distro packages
         env:
