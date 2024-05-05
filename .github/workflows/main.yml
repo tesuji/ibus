@@ -20,6 +20,7 @@ jobs:
 
 
   build:
+    if: false
     runs-on: ubuntu-latest
 
     strategy:
@@ -205,3 +206,80 @@ jobs:
           VERBOSE=1
           DESTDIR="$HOME/build/$USER/dest"
 
+  ghdocs:
+    runs-on: ubuntu-latest
+    # if: github.event_name != 'pull_request' && github.event.ref == 'refs/heads/main'
+    if: github.event_name != 'pull_request'
+    needs: [build]
+    steps:
+      - name: Install distro packages
+        env:
+         # For autogen.sh
+         UBUNTU_PACKAGES_AUTOGEN: >
+           autopoint
+           strace
+         # For make from
+         # https://packages.ubuntu.com/search?searchon=sourcenames&keywords=ibus
+         UBUNTU_PACKAGES_MAKE: >
+           desktop-file-utils
+           dbus-x11
+           gobject-introspection
+           gtk-doc-tools
+           iso-codes
+           libdconf-dev
+           libdbusmenu-gtk3-dev
+           libgirepository1.0-dev
+           libglib2.0-dev
+           libgtk-3-bin
+           libgtk-3-dev
+           libgtk-4-dev
+           libgtk2.0-dev
+           libnotify-dev
+           libtool
+           libwayland-dev
+           python-gi-dev
+           python3-all
+           systemd
+           unicode-cldr-core
+           unicode-data
+           valac
+        run: |
+          set -x
+          apt-get update -qq -y
+          apt-get install -q -y git
+          PACKAGES=$(echo "$UBUNTU_PACKAGES_AUTOGEN" | tr -d '\n')
+          PACKAGES=$(echo "$PACKAGES $UBUNTU_PACKAGES_MAKE" | tr -d '\n')
+          apt-get install -y $PACKAGES
+          dpkg -l | grep unicode-data
+      - uses: actions/checkout@v4
+        with:
+          #repository: ibus/ibus
+          fetch-depth: 200
+      - name: Run autogen
+        run: |
+          ./autogen.sh \
+            --enable-gtk-doc \
+            --with-python=/usr/bin/python3
+      - name: Build docs
+        run: |
+          set -x
+          make
+          make -C docs/reference/ibus/
+      - name: Commit docs to gh-pages branch
+        working-directory: docs/reference/ibus/html
+        run: |
+          # Bypassing Jekyll on GitHub Pages
+          touch .nojekyll
+          REV=$(git rev-parse --short HEAD)
+          git init
+          git config user.name "Actions"
+          git config user.email ""
+          git add -A .
+          # git add --renormalize .
+          git commit -qm "Documentation for ${{github.repository}}@${REV}"
+        shell: bash
+      - name: Push gh-pages to GitHub
+        working-directory: docs/reference/ibus/html
+        run: |
+          git remote add upstream https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git push -q upstream HEAD:gh-pages --force
