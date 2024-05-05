@@ -262,7 +262,7 @@ jobs:
           ./autogen.sh \
             --enable-gtk-doc \
             --with-python=/usr/bin/python3 \
-            ----with-ucd-dir=/usr/share/unicode
+            --with-ucd-dir=/usr/share/unicode
       - name: Build docs
         run: |
           set -x
