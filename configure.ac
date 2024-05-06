@@ -398,8 +398,8 @@ AC_SUBST(IBUS_GIR_SCANNERFLAGS)
 # Check vapigen.
 VAPIGEN_CHECK([0.16])
 
-# Check for gtk-doc.
-GTK_DOC_CHECK(1.28)
+# check for gtk-doc
+GTK_DOC_CHECK([1.14],[--flavour no-tmpl])
 if test x"$enable_gtk_doc" = x"no"; then
     enable_gtk_doc="no (disabled, use --enable-gtk-doc to enable)"
 fi

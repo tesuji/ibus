@@ -211,7 +211,8 @@ jobs:
   ghdocs:
     runs-on: ubuntu-latest
     # if: github.event_name != 'pull_request' && github.event.ref == 'refs/heads/main'
-    if: github.event_name != 'pull_request'
+    # if: github.event_name != 'pull_request'
+    if: false
     # needs: [build]
     steps:
       - name: Install distro packages
@@ -261,6 +262,7 @@ jobs:
         run: |
           ./autogen.sh \
             --enable-gtk-doc \
+            --disable-tests \
             --with-python=/usr/bin/python3 \
             --with-ucd-dir=/usr/share/unicode
       - name: Build docs
