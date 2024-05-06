@@ -1,3 +1,5 @@
+#include <gtk/gtk.h>
+
 ibus_hotkey_profile_get_type
 ibus_object_get_type
 ibus_config_get_type
