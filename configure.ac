@@ -884,7 +884,7 @@ data/dconf/00-upstream-settings.5
 data/dconf/ibus.5
 docs/Makefile
 docs/reference/Makefile
-docs/reference/ibus/ibus-docs.sgml
+docs/reference/ibus/ibus-docs.xml
 docs/reference/ibus/Makefile
 engine/Makefile
 ibus/_config.py

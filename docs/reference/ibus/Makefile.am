@@ -33,7 +33,7 @@ AUTOMAKE_OPTIONS = 1.6
 DOC_MODULE=ibus
 
 # The top-level SGML file. You can change this if you want to.
-DOC_MAIN_SGML_FILE=$(DOC_MODULE)-docs.sgml
+DOC_MAIN_SGML_FILE=$(DOC_MODULE)-docs.xml
 
 # The directory containing the source code. Relative to $(srcdir).
 # gtk-doc will search all .c & .h files beneath here for inline comments
@@ -85,12 +85,12 @@ IGNORE_HFILES= \
 HTML_IMAGES=
 
 # Extra SGML files that are included by $(DOC_MAIN_SGML_FILE).
-# e.g. content_files=running.sgml building.sgml changes-2.0.sgml
+# e.g. content_files=running.xml building.xml changes-2.0.xml
 content_files=
 
 # SGML files where gtk-doc abbrevations (#GtkWidget) are expanded
 # These files must be listed here *and* in content_files
-# e.g. expand_content_files=running.sgml
+# e.g. expand_content_files=running.xml
 expand_content_files=
 
 # CFLAGS and LDFLAGS for compiling gtkdoc-scangobj with your library.
